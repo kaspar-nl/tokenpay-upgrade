@@ -1,0 +1,31 @@
+FROM ubuntu:bionic
+
+# install runtime dependencies
+RUN apt-get update && \
+    apt-get install -q -y --no-install-recommends --no-upgrade software-properties-common && \
+    add-apt-repository ppa:bitcoin/bitcoin && \
+    apt-get update && \
+    apt-get install -q -y --no-install-recommends --no-upgrade ca-certificates \
+                                                               dirmngr \
+                                                               gosu \
+                                                               gpg \
+                                                               wget \
+                                                               libssl1.1 \
+                                                               libevent-2.1-6 \
+                                                               zlib1g \
+                                                               libboost-filesystem1.65.1 \
+                                                               libboost-program-options1.65.1 \
+                                                               libboost-thread1.65.1 \
+                                                               libboost-system1.65.1 \
+                                                               libcap2 \
+                                                               libseccomp2 \
+                                                               libstdc++6 \
+                                                               libevent-dev \
+                                                               libzmq3-dev \
+                                                               libminiupnpc-dev \
+                                                               libunivalue0 \
+                                                               libdb4.8-dev \
+                                                               libdb4.8++-dev
+
+# install tokenpay binaries
+COPY bitcoind /usr/bin/bitcoind

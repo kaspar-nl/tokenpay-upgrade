@@ -1,0 +1,3 @@
+[submodule "src/tor"]
+	path = src/tor
+	url = https://gitlab.com/theodor96/btp-tor.git

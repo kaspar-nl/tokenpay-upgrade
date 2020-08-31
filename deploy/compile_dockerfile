@@ -1,0 +1,53 @@
+FROM ubuntu:18.04
+
+ARG version=master
+ARG extraArgs=""
+ENV extraArgs $extraArgs
+
+RUN apt-get update && \
+    apt-get install -y -q --no-install-recommends --no-upgrade software-properties-common && \
+    add-apt-repository ppa:bitcoin/bitcoin && \
+    apt-get update && \
+    apt-get install -y -q --no-install-recommends --no-upgrade build-essential \
+                                                               unzip \
+                                                               bsdmainutils \
+                                                               doxygen \
+                                                               git \
+                                                               libtool \
+                                                               autotools-dev \
+                                                               automake \
+                                                               pkg-config \
+                                                               zlib1g-dev \
+                                                               libevent-dev \
+                                                               libboost-all-dev \
+                                                               libseccomp-dev \
+                                                               libcap-dev \
+                                                               libminiupnpc-dev \
+                                                               libqt5gui5 \
+                                                               libqt5core5a \
+                                                               libqt5webkit5-dev \
+                                                               libqt5dbus5 \
+                                                               qttools5-dev \
+                                                               qttools5-dev-tools \
+                                                               libprotobuf-dev \
+                                                               protobuf-compiler \
+                                                               libqrencode-dev \
+                                                               libssl-dev \
+                                                               qt5-default \
+                                                               liblzma-dev \
+                                                               libzstd-dev \
+                                                               libdb4.8-dev \
+                                                               libdb4.8++-dev
+
+# Download files
+RUN git clone https://gitlab.com/theodor96/btp.git
+
+WORKDIR /btp
+
+RUN git checkout $version
+
+# Compile
+RUN ./autogen.sh
+RUN ./configure
+RUN make -j8
+RUN cp src/bitcoind /bin
